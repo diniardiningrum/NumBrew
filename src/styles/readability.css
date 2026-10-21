@@ -1,0 +1,395 @@
+/* Keep small supporting text legible, including at the narrow breakpoints. */
+:root {
+  --muted: #777360;
+}
+.nav-item {
+  font-size: 13px;
+}
+.page-header p {
+  font-size: 13px;
+}
+.stat-top > span:first-child {
+  font-size: 12px;
+}
+.stat-card > small {
+  font-size: 11px;
+  color: #777360;
+}
+.cafe-topline strong,
+.cafe-topline > span {
+  font-size: 11px;
+}
+.cafe-control-copy span {
+  font-size: 11px;
+  color: #777360;
+}
+.day-panel > p {
+  font-size: 13px;
+  color: #777360;
+}
+.welcome-list li {
+  font-size: 12px;
+  color: #6c715b;
+}
+.welcome-footnote {
+  font-size: 10px;
+  color: #777360;
+}
+.checklist-item strong {
+  font-size: 12px;
+}
+.checklist-item small {
+  font-size: 10px;
+  color: #777360;
+}
+.section-heading p {
+  font-size: 12px;
+  color: #777360;
+}
+.product-info h3 {
+  font-size: 14px;
+}
+.product-info p {
+  font-size: 11px;
+  color: #777360;
+}
+.product-price > strong {
+  font-size: 17px;
+}
+.product-price > span,
+.product-stock {
+  font-size: 10px;
+  color: #777360;
+}
+.product-price b {
+  color: #777360;
+}
+.bottom-note strong {
+  font-size: 12px;
+  color: #5c6a46;
+}
+.bottom-note p {
+  font-size: 11px;
+  color: #73785d;
+}
+.bottom-note .text-button {
+  font-size: 11px;
+  color: #5f7646;
+}
+.page-footer {
+  font-size: 10px;
+  color: #777360;
+}
+.mobile-tools {
+  display: none;
+}
+.panel-intro p span,
+.panel-description,
+.cost-detail p,
+.help-steps p,
+.setting-row p,
+.report-advice p,
+.learning-note p {
+  font-size: 13px;
+  color: #777360;
+}
+.supplier-row h3,
+.simple-row {
+  font-size: 13px;
+}
+.ingredient-info p,
+.ingredient-info small,
+.field-label,
+.simple-row small {
+  font-size: 11px;
+  color: #777360;
+}
+.cost-detail .simple-row {
+  font-size: 13px;
+}
+.order-person strong,
+.order-product,
+.order-product strong {
+  font-size: 12px;
+}
+.order-person small {
+  font-size: 10px;
+  color: #777360;
+}
+.report-calculation p,
+.report-calculation > small {
+  font-size: 12px;
+  color: #777360;
+}
+.icon-button,
+.button.small,
+.stepper > button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.stepper > span {
+  min-width: 28px;
+}
+.supplier-row .stepper {
+  width: auto;
+  flex-shrink: 0;
+}
+.checkbox {
+  min-height: 32px;
+}
+.text-button {
+  min-height: 44px;
+}
+@media (max-width: 1200px) {
+  .product-visual {
+    width: 90px;
+  }
+  .product-info {
+    padding-inline: 12px;
+  }
+  .product-info h3 {
+    font-size: 12px;
+  }
+  .product-info p {
+    font-size: 10px;
+  }
+}
+@media (max-width: 790px) {
+  .product-visual {
+    width: 100%;
+  }
+  .section-heading {
+    align-items: flex-start;
+  }
+  .checklist-item strong {
+    font-size: 11px;
+  }
+  .checklist-item small {
+    font-size: 10px;
+  }
+}
+@media (max-width: 560px) {
+  .nav-item > span:nth-child(2) {
+    font-size: 9px;
+  }
+  .page-header p {
+    font-size: 12px;
+  }
+  .stat-top > span:first-child {
+    font-size: 11px;
+  }
+  .stat-card > small {
+    font-size: 10px;
+  }
+  .cafe-control-copy span {
+    font-size: 10px;
+  }
+  .cafe-topline strong,
+  .cafe-topline > span {
+    font-size: 10px;
+  }
+  .product-visual {
+    width: 110px;
+  }
+  .product-info h3 {
+    font-size: 15px;
+  }
+  .product-info p {
+    font-size: 12px;
+  }
+  .section-heading p {
+    font-size: 11px;
+  }
+  .section-heading .text-button {
+    font-size: 10px;
+    white-space: normal;
+    text-align: right;
+  }
+  .page-footer {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .mobile-tools {
+    display: flex;
+    gap: 8px;
+  }
+  .supplier-row {
+    gap: 11px;
+  }
+  .supplier-row > strong {
+    width: auto;
+    margin-left: auto;
+  }
+  .supplier-row .stepper {
+    margin-left: auto;
+  }
+  .ingredient-info {
+    min-width: 120px;
+  }
+  .ingredient-info h3 {
+    font-size: 12px;
+  }
+  .simple-row {
+    font-size: 12px;
+  }
+  .panel-intro p span,
+  .panel-description,
+  .cost-detail p,
+  .help-steps p,
+  .setting-row p,
+  .report-advice p,
+  .learning-note p {
+    font-size: 12px;
+  }
+}
+.hpp-worksheet h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #495f3d;
+}
+.hpp-calculation {
+  margin-top: 18px;
+  padding: 16px;
+  background: #f5f1e5;
+  border: 1px solid #ddd8c5;
+  border-radius: 10px;
+}
+.hpp-calculation.verified {
+  background: #eef3e7;
+  border-color: #bdcdae;
+}
+.hpp-calculation .field-label {
+  font-size: 13px;
+  color: #536445;
+  font-weight: 600;
+}
+.hpp-answer-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+.hpp-answer-row .money-input {
+  min-width: 0;
+}
+.hpp-answer-row input {
+  font-size: 15px;
+}
+.hpp-answer-row input::placeholder {
+  font-size: 12px;
+}
+.hpp-feedback {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #697459;
+  margin: 10px 0 0;
+}
+.price-fields.manual-hpp-price {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.hpp-worksheet .simple-row > span {
+  min-width: 0;
+}
+.hpp-worksheet .simple-row > strong {
+  flex-shrink: 0;
+}
+@media (max-width: 560px) {
+  .hpp-answer-row,
+  .price-fields.manual-hpp-price {
+    grid-template-columns: 1fr;
+  }
+  .hpp-answer-row .button {
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+.profit-worksheet {
+  padding: 18px;
+  border: 1px solid #dedfce;
+  border-radius: 10px;
+  background: #fffdf5;
+}
+.profit-worksheet h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: #536445;
+}
+.profit-worksheet ol {
+  padding-left: 20px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #5f6651;
+}
+.profit-worksheet p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #697459;
+}
+.profit-worksheet .profit-equation {
+  padding: 12px;
+  margin: 12px 0;
+  background: #f0f3e8;
+  border-radius: 8px;
+  color: #435c38;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.profit-detail-toggle {
+  margin-top: 18px;
+}
+.promotion-card {
+  padding: 20px;
+  margin: 18px 0;
+  border: 1px solid #dedfce;
+  border-radius: 12px;
+  background: #fffdf6;
+}
+.promotion-card form {
+  margin: 18px 0 12px;
+}
+.percent-suffix {
+  padding: 0 14px;
+}
+.promo-math {
+  background: #f1f3e8;
+  padding: 15px;
+  border-radius: 9px;
+  margin-top: 14px;
+}
+.promo-math > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  font-size: 13px;
+  color: #596447;
+}
+.promo-math strong {
+  white-space: nowrap;
+}
+.promo-math .promo-net {
+  border-top: 1px solid #d6ddc8;
+  margin-top: 6px;
+  font-weight: 600;
+}
+.promo-label {
+  display: block;
+  color: #64774e;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 5px;
+}
+@media (max-width: 560px) {
+  .promotion-card {
+    padding: 14px;
+  }
+  .promo-math > div {
+    font-size: 12px;
+  }
+}
