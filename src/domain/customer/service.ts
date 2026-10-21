@@ -20,29 +20,29 @@ export function createArrivalService(
     const menu = PRODUCTS[customer.product].name;
     const orders: Record<Archetype, string[]> = {
       student: [
-        `One ${menu}, please. Something to enjoy while studying.`,
-        `One cup of ${menu}, please!`,
-        `Stopping by after school. One ${menu}, please.`,
+        `Satu ${menu}, ya. Untuk menemani belajar.`,
+        `Satu gelas ${menu}, ya!`,
+        `Mampir sepulang sekolah. Satu ${menu}, ya.`,
       ],
       university: [
-        `I will have a ${menu}. Still have assignments to finish.`,
-        `One ${menu}, please. I am staying to study for a while.`,
-        `Just finished class. One cup of ${menu}, please.`,
+        `Saya pesan ${menu}. Masih ada tugas yang harus diselesaikan.`,
+        `Satu ${menu}, ya. Saya mau belajar sebentar di sini.`,
+        `Baru selesai kuliah. Satu gelas ${menu}, ya.`,
       ],
       worker: [
-        `One ${menu} before I head back to work, please.`,
-        `One ${menu}, please. I am on a short break.`,
-        `Good afternoon. One ${menu}, please.`,
+        `Satu ${menu} sebelum kembali bekerja, ya.`,
+        `Satu ${menu}, ya. Saya sedang istirahat sebentar.`,
+        `Selamat siang. Satu ${menu}, ya.`,
       ],
       blogger: [
-        `I would like to try the ${menu} today. One, please!`,
-        `I have checked the menu. One ${menu}, please.`,
-        `The ${menu} looks interesting. I will have one cup.`,
+        `Saya ingin mencoba ${menu} hari ini. Satu, ya!`,
+        `Saya sudah lihat menunya. Satu ${menu}, ya.`,
+        `Minuman ${menu} kelihatannya menarik. Saya pesan satu gelas.`,
       ],
       loyal: [
-        `Back again! One ${menu} today, please.`,
-        `Hello! One ${menu} to enjoy this afternoon.`,
-        `Good to be back. I will have a ${menu}, please.`,
+        `Mampir lagi! Satu ${menu} untuk hari ini, ya.`,
+        `Halo! Satu ${menu} untuk dinikmati sore ini.`,
+        `Senang kembali ke sini. Saya pesan ${menu}, ya.`,
       ],
     };
     service.line = orders[customer.archetype][service.variant];
@@ -52,56 +52,56 @@ export function createArrivalService(
 
 const greetings: Record<Archetype, string[]> = {
   student: [
-    'I feel like something sweet after school. Anything within my pocket money?',
-    'Stopping by before a study group. What drinks do you have?',
-    'I feel like a treat, but my pocket money is limited.',
+    'Sepulang sekolah ingin yang manis. Ada yang sesuai uang saku saya?',
+    'Mampir sebelum belajar kelompok. Ada minuman apa saja?',
+    'Ingin jajan minuman, tapi uang saku saya terbatas.',
   ],
   university: [
-    'Lots of assignments left. I need a drink for a late study night.',
-    'Just finished class. I feel like a drink with a rich coffee flavor.',
-    'I am settling in to work on an assignment. Any drink recommendations?',
+    'Masih banyak tugas. Perlu minuman untuk menemani belajar malam ini.',
+    'Baru selesai kuliah. Ingin minuman dengan rasa kopi yang kuat.',
+    'Saya mau mengerjakan tugas di sini. Ada rekomendasi minuman?',
   ],
   worker: [
-    'I have a short break. Looking for a good drink before heading back to work.',
-    'It has been a busy day. I would love a carefully made drink.',
-    'Stopping by between tasks. Can you help me choose a drink?',
+    'Saya istirahat sebentar. Cari minuman enak sebelum kembali bekerja.',
+    'Hari ini sibuk sekali. Ingin menikmati minuman yang dibuat dengan sepenuh hati.',
+    'Mampir di sela pekerjaan. Bisa bantu pilih minuman?',
   ],
   blogger: [
-    'Lovely cafe! I would like to try a drink worth writing about.',
-    'Looking for new flavors for my review. What is special here?',
-    'Hello! I love finding little cafes with memorable service.',
+    'Kafenya menyenangkan! Saya ingin mencoba minuman untuk diulas.',
+    'Sedang mencari rasa baru untuk ulasan. Apa yang istimewa di sini?',
+    'Halo! Saya senang menemukan kafe kecil dengan pelayanan berkesan.',
   ],
   loyal: [
-    'Good to be back. Do you remember my favorite flavor?',
-    'Such a cozy spot. Pick something for me to enjoy this afternoon.',
-    'Hello, back again! I feel like a familiar favorite today.',
+    'Senang kembali ke sini. Masih ingat rasa favorit saya?',
+    'Tempatnya nyaman sekali. Pilihkan minuman untuk menemani sore saya.',
+    'Halo, saya kembali! Hari ini ingin minuman favorit seperti biasa.',
   ],
 };
 const thanks: Record<Archetype, string[]> = {
   student: [
-    'Affordable and great for a study break. Thank you!',
-    'A tasty drink within my pocket money. Nice!',
-    'I will bring my school friends next time.',
+    'Terjangkau dan cocok untuk jeda belajar. Terima kasih!',
+    'Minumannya enak dan sesuai uang saku. Mantap!',
+    'Lain kali saya ajak teman-teman sekolah.',
   ],
   university: [
-    'Just what I needed for my assignment. Thanks!',
-    'Great aroma and flavor. Ready to get back to studying!',
-    'One cup, then back to my assignments. Thank you!',
+    'Pas sekali untuk menemani mengerjakan tugas. Terima kasih!',
+    'Aroma dan rasanya enak. Siap belajar lagi!',
+    'Satu gelas, lalu kembali mengerjakan tugas. Terima kasih!',
   ],
   worker: [
-    'Thank you. That made my short break much better.',
-    'Just right for clearing my head before going back to work.',
-    'Good service makes me want to come back.',
+    'Terima kasih. Istirahat singkat saya jadi lebih menyenangkan.',
+    'Pas untuk menyegarkan pikiran sebelum kembali bekerja.',
+    'Pelayanannya membuat saya ingin kembali.',
   ],
   blogger: [
-    'Interesting flavor! I will mention the service in my review.',
-    'There is a warm story behind this cup. Thank you!',
-    'A little cafe with a lot of care. Worth recommending.',
+    'Rasanya menarik! Pelayanannya akan saya ceritakan dalam ulasan.',
+    'Ada cerita hangat di balik segelas minuman ini. Terima kasih!',
+    'Kafe kecil dengan perhatian besar. Layak direkomendasikan.',
   ],
   loyal: [
-    'That taste keeps me coming back. See you again!',
-    'Always happy to be welcomed here. Thank you.',
-    'You make my favorite spot feel even more welcoming.',
+    'Rasa ini membuat saya selalu kembali. Sampai jumpa!',
+    'Selalu senang disambut di sini. Terima kasih.',
+    'Kalian membuat tempat favorit saya terasa makin ramah.',
   ],
 };
 
@@ -119,7 +119,7 @@ export function createService(
     refusals: 0,
     line:
       stage === 'ordered'
-        ? 'My order has been taken. Please go ahead and prepare it.'
+        ? 'Pesanan saya sudah dicatat. Silakan disiapkan.'
         : greetings[customer.archetype][variant],
     style: null,
     startedAt: null,
@@ -134,11 +134,11 @@ export function customerSpeech(customer: Customer, elapsed: number): string {
   const remaining = remainingPatience(customer, elapsed);
   if (remaining <= 10 && customer.service.stage !== 'ready') {
     return customer.archetype === 'worker'
-      ? 'Sorry, I need to get back to work soon. How is my order coming along?'
+      ? 'Maaf, saya harus segera kembali bekerja. Bagaimana pesanan saya?'
       : [
-          'I have been waiting a while. Could you help me, please?',
-          'I need to leave soon. How is my order coming along?',
-          'I hope there is still time to enjoy my drink before I leave.',
+          'Saya sudah menunggu cukup lama. Bisa dibantu?',
+          'Saya harus segera pergi. Bagaimana pesanan saya?',
+          'Semoga masih sempat menikmati minuman sebelum pergi.',
         ][customer.service.variant];
   }
   return customer.service.line;
@@ -146,17 +146,17 @@ export function customerSpeech(customer: Customer, elapsed: number): string {
 export function tasteReply(customer: Customer): string {
   const favorite = PRODUCTS[PEOPLE[customer.archetype].favorite].name;
   return {
-    student: `I like smooth, sweet drinks like ${favorite}. Price still matters to me.`,
-    university: `${favorite} is my favorite. Coffee goes well with assignments, but I am open to other drinks.`,
-    worker: `Usually ${favorite}. When there is time, I appreciate a carefully made drink.`,
-    blogger: `I am curious about ${favorite}. I will write about the flavor and service.`,
-    loyal: `My favorite is ${favorite}. It means a lot when you remember.`,
+    student: `Saya suka minuman lembut dan manis seperti ${favorite}. Harga tetap penting bagi saya.`,
+    university: `${favorite} favorit saya. Kopi cocok menemani tugas, tapi saya mau mencoba yang lain.`,
+    worker: `Biasanya ${favorite}. Kalau ada waktu, saya suka minuman yang dibuat dengan teliti.`,
+    blogger: `Saya penasaran dengan ${favorite}. Saya akan mengulas rasa dan pelayanannya.`,
+    loyal: `Favorit saya ${favorite}. Senang sekali kalau masih diingat.`,
   }[customer.archetype];
 }
 export function thankYou(customer: Customer): string {
   const line = thanks[customer.archetype][customer.service.variant];
   return customer.service.style === 'careful'
-    ? `${line} I can taste the care that went into it.`
+    ? `${line} Terasa sekali perhatian dalam meraciknya.`
     : line;
 }
 

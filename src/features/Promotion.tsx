@@ -29,9 +29,13 @@ function PromotionEditor({ id }: { id: ProductId }) {
         <ProductArt id={id} small />
         <div>
           <h3>{PRODUCTS[id].name}</h3>
-          <p>{item.active ? 'Item enabled' : 'Item disabled · discount applies when enabled'}</p>
+          <p>
+            {item.active
+              ? 'Menu diaktifkan'
+              : 'Menu dinonaktifkan · diskon berlaku saat diaktifkan'}
+          </p>
           <span className="tag green">
-            {savedPercent ? `Saved discount: ${savedPercent}%` : 'No discount'}
+            {savedPercent ? `Diskon tersimpan: ${savedPercent}%` : 'Tanpa diskon'}
           </span>
         </div>
       </div>
@@ -42,7 +46,7 @@ function PromotionEditor({ id }: { id: ProductId }) {
         }}
       >
         <label className="field-label" htmlFor={`promo-${id}`}>
-          Discount {PRODUCTS[id].name} (%)
+          Diskon {PRODUCTS[id].name} (%)
         </label>
         <div className="hpp-answer-row">
           <div className="money-input">
@@ -64,62 +68,62 @@ function PromotionEditor({ id }: { id: ProductId }) {
             type="submit"
             disabled={!editable || !valid || percent === savedPercent}
           >
-            Save discount
+            Simpan diskon
           </button>
         </div>
         <p className="hpp-feedback">
-          Set 0% to turn off the discount. Maximum {CONFIG.maxDiscountPercent}%.{' '}
+          Atur 0% untuk menonaktifkan diskon. Maksimal {CONFIG.maxDiscountPercent}%.{' '}
           {valid && percent !== savedPercent
-            ? 'This preview has not been saved.'
-            : 'This setting stays active until you change it during preparation.'}
+            ? 'Pratinjau ini belum disimpan.'
+            : 'Pengaturan ini tetap berlaku sampai kamu mengubahnya saat persiapan.'}
         </p>
       </form>
       {quote ? (
         <>
           <div className="promo-math">
             <div>
-              <span>Regular price</span>
+              <span>Harga normal</span>
               <strong>{money(quote.gross)}</strong>
             </div>
             <div>
               <span>
-                Discount · {percent}% × {money(quote.gross)}
+                Diskon · {percent}% × {money(quote.gross)}
               </span>
               <strong>−{money(quote.discount)}</strong>
             </div>
             <div className="promo-net">
-              <span>Customer pays</span>
+              <span>Pelanggan membayar</span>
               <strong>{money(quote.net)}</strong>
             </div>
           </div>
           {knownHpp ? (
             <div className={`contribution ${quote.net < cost ? 'loss' : ''}`}>
               <span>
-                {quote.net < cost ? 'Loss' : 'Profit'} after discount, before operating costs
+                {quote.net < cost ? 'Rugi' : 'Laba'} setelah diskon, sebelum biaya operasional
               </span>
               <strong>{money(Math.abs(quote.net - cost))}</strong>
             </div>
           ) : (
             <button className="text-button" onClick={() => store.openPanel('pricing')}>
-              Calculate COGS to compare margins <Icon name="arrowRight" size={14} />
+              Hitung HPP untuk membandingkan margin <Icon name="arrowRight" size={14} />
             </button>
           )}
           {knownHpp && quote.net < cost && (
             <p className="error-text">
-              The discounted price is below COGS. Every cup sold makes a loss before operating
-              costs.
+              Harga setelah diskon di bawah HPP. Setiap gelas terjual merugi sebelum biaya
+              operasional.
             </p>
           )}
           {quote.discount > 0 && (
             <p className="hpp-feedback">
-              Discounts are rounded to the nearest Rupiah per cup. The minimum payment is Rp1.
-              Ingredient costs do not decrease with a discount.
+              Diskon dibulatkan ke rupiah terdekat per gelas. Pembayaran minimal Rp1. Biaya bahan
+              tidak berkurang karena diskon.
             </p>
           )}
         </>
       ) : (
         <p className="error-text">
-          Enter a whole percentage from 0 to {CONFIG.maxDiscountPercent}.
+          Masukkan persentase bulat dari 0 sampai {CONFIG.maxDiscountPercent}.
         </p>
       )}
     </article>
@@ -132,7 +136,7 @@ export function PromotionPanel() {
     <>
       {session.day.phase !== 'preparation' && (
         <p className="notice">
-          Discounts are locked during service. Change them during preparation for the next day.
+          Diskon terkunci selama pelayanan. Ubah saat persiapan hari berikutnya.
         </p>
       )}
       {productIds.map((id) => (

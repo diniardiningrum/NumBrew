@@ -87,7 +87,7 @@ describe('customer service save compatibility', () => {
       askedTaste: false,
       askedBudget: false,
       refusals: 0,
-      line: 'My order has been taken. Thank you!',
+      line: 'Pesanan saya sudah dicatat. Terima kasih!',
       style: null,
       startedAt: null,
       readyAt: null,
@@ -121,7 +121,7 @@ describe('customer service save compatibility', () => {
     port.setItem(SAVE_KEY, '{damaged');
     port.setItem(BACKUP_KEY, JSON.stringify(legacyEnvelope()));
     const restored = readSave(port);
-    expect(restored.warning).toContain('backup');
+    expect(restored.warning).toContain('Cadangan');
     expect(restored.data?.session.day.customers[0].service.stage).toBe('ordered');
     expect(port.getItem(SAVE_KEY)).toBe('{damaged');
   });

@@ -72,7 +72,7 @@ function migrateLegacyService(session: unknown): void {
       askedTaste: false,
       askedBudget: false,
       refusals: 0,
-      line: 'My order has been taken. Thank you!',
+      line: 'Pesanan saya sudah dicatat. Terima kasih!',
       style: null,
       startedAt: null,
       readyAt: null,
@@ -300,7 +300,7 @@ export function validSession(s: unknown): s is Session {
 }
 
 export function decode(raw: string): SaveEnvelope {
-  if (raw.length > 4_000_000) throw new Error('Save file is too large.');
+  if (raw.length > 4_000_000) throw new Error('Berkas simpanan terlalu besar.');
   const data: unknown = JSON.parse(raw);
   if (object(data) && data.version === 1) {
     // Only parsed data is normalized; validation never mutates caller-owned sessions.
@@ -318,7 +318,7 @@ export function decode(raw: string): SaveEnvelope {
     typeof data.reducedMotion !== 'boolean' ||
     (data.musicEnabled !== undefined && typeof data.musicEnabled !== 'boolean')
   )
-    throw new Error('The save is invalid or its version is not supported.');
+    throw new Error('Simpanan tidak valid atau versinya tidak didukung.');
   return data as unknown as SaveEnvelope;
 }
 export function readSave(storage: StoragePort): { data: SaveEnvelope | null; warning: string } {
@@ -332,9 +332,9 @@ export function readSave(storage: StoragePort): { data: SaveEnvelope | null; war
       return {
         data: decode(raw),
         warning: isBackup
-          ? 'The main save is damaged. The latest backup was restored.'
+          ? 'Simpanan utama rusak. Cadangan terbaru telah dipulihkan.'
           : isLegacy
-            ? 'A Kafe Hitung save was found and will continue in NumBrew.'
+            ? 'Simpanan Kafe Hitung ditemukan dan akan dilanjutkan di NumBrew.'
             : '',
       };
     } catch {
@@ -344,7 +344,7 @@ export function readSave(storage: StoragePort): { data: SaveEnvelope | null; war
   return {
     data: null,
     warning: damaged
-      ? 'The save could not be read. Your old data has been kept; a new game will only start if you choose it.'
+      ? 'Simpanan tidak dapat dibaca. Data lamamu tetap disimpan; permainan baru hanya dimulai jika kamu memilihnya.'
       : '',
   };
 }

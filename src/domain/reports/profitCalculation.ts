@@ -10,11 +10,11 @@ export function parseProfitInput(input: string): number | null {
 
 export function profitFeedback(answer: number | null, expected: number): string | null {
   if (answer === null || !Number.isSafeInteger(answer))
-    return 'Enter whole Rupiah. Use a minus sign for a loss, such as -5000 or -5.000. Enter 0 for break-even.';
+    return 'Masukkan rupiah bulat. Gunakan tanda minus untuk rugi, misalnya -5000 atau -5.000. Masukkan 0 untuk impas.';
   if (answer === expected) return null;
   if (expected < 0 && answer > 0 && answer === -expected)
-    return 'The difference is correct. Since costs exceed revenue, write your answer with a minus sign.';
-  return 'Not quite. Start with net revenue, then subtract COGS, operating costs, and tax. Do not subtract discounts twice or deduct all stock purchases.';
+    return 'Selisihnya benar. Karena biaya melebihi pendapatan, tulis jawaban dengan tanda minus.';
+  return 'Belum tepat. Mulai dari pendapatan bersih, lalu kurangi HPP, biaya operasional, dan pajak. Jangan kurangi diskon dua kali atau seluruh pembelian stok.';
 }
 
 export function hasCalculatedProfit(report: Report): boolean {

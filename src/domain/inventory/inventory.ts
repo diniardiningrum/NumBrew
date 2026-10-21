@@ -31,7 +31,7 @@ export function capacity(inventory: Inventory, product: ProductId): number {
 export function consume(inventory: Inventory, id: IngredientId, quantity: number): number {
   integer(quantity);
   if (stock(inventory, id) < quantity)
-    throw new Error(`Not enough stock of ${INGREDIENTS[id].name.toLowerCase()}.`);
+    throw new Error(`Stok tidak cukup untuk ${INGREDIENTS[id].name.toLowerCase()}.`);
   let remaining = quantity,
     cost = 0;
   for (const batch of inventory[id]) {

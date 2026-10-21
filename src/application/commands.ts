@@ -100,7 +100,7 @@ function reputation(state: Session, delta: number): void {
   );
 }
 function settle(state: Session): void {
-  if (state.day.settled) throw new Error('The report for today has already been finalized.');
+  if (state.day.settled) throw new Error('Laporan hari ini sudah diselesaikan.');
   state.day.missed.closing += state.day.customers.length;
   state.day.customers = [];
   state.cash -= state.day.operatingCost;
@@ -109,7 +109,7 @@ function settle(state: Session): void {
     day: state.day.number,
     kind: 'operating',
     amount: -state.day.operatingCost,
-    description: 'Daily operating costs',
+    description: 'Biaya operasional harian',
   });
   state.day.settled = true;
   state.day.phase = 'report';
@@ -164,7 +164,7 @@ function arrival(state: Session): void {
   });
   const customer = d.customers[d.customers.length - 1];
   if (quote.discount > 0 && customer.service.stage === 'ordered')
-    customer.service.line += ` With the discount of ${quote.discountPercent}%, that is Rp${quote.net.toLocaleString('id-ID')}, please.`;
+    customer.service.line += ` Dengan diskon ${quote.discountPercent}%, harganya menjadi Rp${quote.net.toLocaleString('id-ID')}, ya.`;
 }
 
 export function dispatchCommand(previous: Session, command: Command): GameResult {
@@ -177,18 +177,18 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
       ['buy', 'price', 'promotion', 'calculate_hpp', 'toggle', 'open'].includes(command.type) &&
       d.phase !== 'preparation'
     )
-      throw new Error('Settings are only available during preparation.');
+      throw new Error('Pengaturan hanya tersedia saat persiapan.');
     switch (command.type) {
       case 'buy': {
         if (Object.keys(command.cart).some((id) => !ingredientIds.includes(id as IngredientId)))
-          throw new Error('Unknown ingredient.');
+          throw new Error('Bahan tidak dikenal.');
         const items = ingredientIds.map((id) => ({
           id,
-          packs: integer(command.cart[id] ?? 0, 'Number of packs', 100),
+          packs: integer(command.cart[id] ?? 0, 'Jumlah kemasan', 100),
         }));
         const total = items.reduce((n, { id, packs }) => n + packs * INGREDIENTS[id].cost, 0);
-        if (total <= 0) throw new Error('Select at least one ingredient pack.');
-        if (total > state.cash) throw new Error('Not enough cash for this purchase.');
+        if (total <= 0) throw new Error('Pilih setidaknya satu kemasan bahan.');
+        if (total > state.cash) throw new Error('Kas tidak cukup untuk pembelian ini.');
         for (const { id, packs } of items.filter((i) => i.packs)) {
           const def = INGREDIENTS[id];
           state.inventory[id].push({
@@ -205,59 +205,60 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
           day: d.number,
           kind: 'purchase',
           amount: -total,
-          description: 'Ingredient purchase from supplier',
+          description: 'Pembelian bahan dari pemasok',
         });
-        message = 'Your ingredients have arrived. Time to plan your menu!';
+        message = 'Bahanmu sudah tiba. Saatnya menyusun menu!';
         break;
       }
       case 'calculate_hpp': {
-        if (!PRODUCTS[command.product]) throw new Error('Unknown menu item.');
+        if (!PRODUCTS[command.product]) throw new Error('Menu tidak dikenal.');
         const expected = recipeCost(state.inventory, command.product).hpp;
         const feedback = hppFeedback(command.answer, expected);
         if (feedback) throw new Error(feedback);
         state.menu[command.product].calculatedHpp = command.answer;
-        message = 'Your COGS calculation is correct. Now set your selling price.';
+        message = 'Perhitungan HPP-mu benar. Sekarang tentukan harga jualnya.';
         break;
       }
       case 'calculate_profit': {
-        integer(command.day, 'Report day');
+        integer(command.day, 'Hari laporan');
         const report = state.reports.find((r) => r.day === command.day);
-        if (!report) throw new Error('Final results can only be saved after the day ends.');
+        if (!report) throw new Error('Hasil akhir hanya dapat disimpan setelah hari berakhir.');
         const feedback = profitFeedback(command.answer, report.profit);
         if (feedback) throw new Error(feedback);
         report.calculatedProfit = command.answer;
         message =
-          'Your net profit / loss calculation is correct. Your result is saved in the daily report.';
+          'Perhitungan laba / rugi bersihmu benar. Hasilnya tersimpan dalam laporan harian.';
         break;
       }
       case 'promotion':
-        if (!PRODUCTS[command.product]) throw new Error('Unknown menu item.');
-        integer(command.percent, 'Discount', CONFIG.maxDiscountPercent);
+        if (!PRODUCTS[command.product]) throw new Error('Menu tidak dikenal.');
+        integer(command.percent, 'Diskon', CONFIG.maxDiscountPercent);
         state.menu[command.product].discountPercent = command.percent;
         message = command.percent
-          ? `Discount ${command.percent}% for ${PRODUCTS[command.product].name} saved.`
-          : `Promo ${PRODUCTS[command.product].name} disabled.`;
+          ? `Diskon ${command.percent}% untuk ${PRODUCTS[command.product].name} disimpan.`
+          : `Promosi ${PRODUCTS[command.product].name} dinonaktifkan.`;
         break;
       case 'price':
-        if (!PRODUCTS[command.product]) throw new Error('Unknown menu item.');
-        integer(command.price, 'Price', CONFIG.maxPrice);
-        if (command.price < 1) throw new Error('Price must be greater than Rp0.');
+        if (!PRODUCTS[command.product]) throw new Error('Menu tidak dikenal.');
+        integer(command.price, 'Harga', CONFIG.maxPrice);
+        if (command.price < 1) throw new Error('Harga harus lebih dari Rp0.');
         if (!hasCalculatedHpp(state, command.product))
-          throw new Error('Calculate and check COGS per serving before saving the selling price.');
+          throw new Error('Hitung dan periksa HPP per porsi sebelum menyimpan harga jual.');
         state.menu[command.product].price = command.price;
-        message = 'Menu price saved.';
+        message = 'Harga menu disimpan.';
         break;
       case 'toggle':
-        if (!PRODUCTS[command.product]) throw new Error('Unknown menu item.');
+        if (!PRODUCTS[command.product]) throw new Error('Menu tidak dikenal.');
         state.menu[command.product].active = !state.menu[command.product].active;
         break;
       case 'open':
         if (!productIds.some((id) => state.menu[id].active && capacity(state.inventory, id) > 0))
-          throw new Error('Prepare ingredients for at least one enabled menu item.');
-        if (state.cash < d.operatingCost) throw new Error('Reserve Rp20.000 for operating costs.');
+          throw new Error('Siapkan bahan untuk setidaknya satu menu aktif.');
+        if (state.cash < d.operatingCost)
+          throw new Error('Sisihkan Rp20.000 untuk biaya operasional.');
         d.phase = 'open';
         state.tutorialSeen = true;
-        message = 'Cafe open. Your first customer will arrive soon!';
+        message = 'Kafe buka. Pelanggan pertamamu akan segera datang!';
         break;
       case 'tick':
         if (d.phase !== 'open' && d.phase !== 'closing') return { state: previous, message: '' };
@@ -273,7 +274,7 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
         if (d.phase === 'open' && d.elapsed >= d.duration) {
           d.phase = 'closing';
           d.closeAt = d.elapsed + CONFIG.closingSeconds;
-          message = 'Opening hours are over. Serve the remaining queue.';
+          message = 'Jam buka telah berakhir. Layani antrean yang tersisa.';
         }
         if (d.phase === 'open' && d.elapsed >= d.nextArrival) {
           arrival(state);
@@ -286,58 +287,54 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
           if (customer.service.stage === 'preparing' && d.elapsed >= customer.service.readyAt!) {
             customer.service.stage = 'ready';
             customer.service.line = [
-              'Oh, it is ready! Can I pay now?',
-              'It smells great. I am ready for my drink!',
-              'The drink looks ready. Thank you for making it!',
+              'Wah, sudah siap! Boleh saya bayar sekarang?',
+              'Aromanya enak. Saya siap menikmati minumannya!',
+              'Minumannya sudah jadi, ya. Terima kasih sudah membuatkannya!',
             ][customer.service.variant];
           }
         }
         if (d.phase === 'closing' && (d.customers.length === 0 || d.elapsed >= d.closeAt)) {
           settle(state);
-          message = 'Day complete. Discover the story behind the numbers.';
+          message = 'Hari selesai. Temukan cerita di balik angka-angkanya.';
         }
         break;
       case 'ask': {
-        if (d.phase !== 'open' && d.phase !== 'closing')
-          throw new Error('The cafe is not open yet.');
+        if (d.phase !== 'open' && d.phase !== 'closing') throw new Error('Kafe belum buka.');
         const customer = d.customers.find((c) => c.id === command.id);
         if (!customer || customer.service.stage !== 'greeting')
-          throw new Error('This customer has already chosen an order.');
+          throw new Error('Pelanggan ini sudah memilih pesanan.');
         if (command.topic !== 'taste' && command.topic !== 'budget')
-          throw new Error('Unknown question.');
+          throw new Error('Pertanyaan tidak dikenal.');
         const flag = command.topic === 'taste' ? 'askedTaste' : 'askedBudget';
-        if (customer.service[flag]) throw new Error('This question has already been answered.');
+        if (customer.service[flag]) throw new Error('Pertanyaan ini sudah dijawab.');
         customer.service[flag] = true;
         customer.service.line =
           command.topic === 'taste'
             ? tasteReply(customer)
-            : `My budget is up to Rp${customer.budget.toLocaleString('id-ID')}. Please help me choose something within that.`;
+            : `Anggaran saya sampai Rp${customer.budget.toLocaleString('id-ID')}. Tolong pilihkan yang sesuai, ya.`;
         break;
       }
       case 'offer': {
-        if (d.phase !== 'open' && d.phase !== 'closing')
-          throw new Error('The cafe is not open yet.');
+        if (d.phase !== 'open' && d.phase !== 'closing') throw new Error('Kafe belum buka.');
         const customer = d.customers.find((c) => c.id === command.id);
         if (!customer || customer.service.stage !== 'greeting')
-          throw new Error('The order has already been agreed.');
+          throw new Error('Pesanan sudah disepakati.');
         if (!PRODUCTS[command.product] || !state.menu[command.product].active)
-          throw new Error('This menu item is not available today.');
+          throw new Error('Menu ini tidak tersedia hari ini.');
         if (brewingCapacity(state, command.product) < 1)
-          throw new Error(
-            'Ingredients for this drink are out of stock or reserved for another order.',
-          );
+          throw new Error('Bahan minuman ini habis atau sudah disisihkan untuk pesanan lain.');
         const quote = quotePrice(state.menu[command.product]);
         const price = quote.net;
         if (price > customer.budget) {
           customer.service.refusals++;
           customer.patience = Math.max(1, customer.patience - 4);
-          customer.service.line = `Rp${price.toLocaleString('id-ID')} is over my budget. My limit is Rp${customer.budget.toLocaleString('id-ID')}. Is there another option?`;
+          customer.service.line = `Rp${price.toLocaleString('id-ID')} melebihi anggaran saya. Batasnya Rp${customer.budget.toLocaleString('id-ID')}. Ada pilihan lain?`;
           customer.service.askedBudget = true;
           if (customer.service.refusals >= 3) {
             d.customers = d.customers.filter((c) => c.id !== customer.id);
             d.missed.low_interest++;
             reputation(state, -1);
-            message = `${customer.name} left after three offers exceeded their budget. Reputation decreased.`;
+            message = `${customer.name} pergi setelah tiga penawaran melebihi anggarannya. Reputasi menurun.`;
           }
           break;
         }
@@ -348,8 +345,8 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
         customer.service.stage = 'ordered';
         customer.service.line =
           command.product === PEOPLE[customer.archetype].favorite
-            ? `${PRODUCTS[command.product].name} is my favorite! Rp${price.toLocaleString('id-ID')} works for me. One cup, please.`
-            : `Sure, I will try ${PRODUCTS[command.product].name}. Rp${price.toLocaleString('id-ID')} is within my budget.`;
+            ? `${PRODUCTS[command.product].name} favorit saya! Rp${price.toLocaleString('id-ID')} cocok untuk saya. Satu gelas, ya.`
+            : `Baik, saya coba ${PRODUCTS[command.product].name}. Rp${price.toLocaleString('id-ID')} masih sesuai anggaran saya.`;
         break;
       }
       case 'change_order': {
@@ -359,44 +356,41 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
           customer.service.stage !== 'ordered' ||
           !['open', 'closing'].includes(d.phase)
         )
-          throw new Error('This order cannot be changed while it is being prepared.');
+          throw new Error('Pesanan tidak dapat diubah saat sedang disiapkan.');
         customer.service.stage = 'greeting';
-        customer.service.line =
-          'All right, let us choose again before preparing it. Any other recommendations?';
+        customer.service.line = 'Baik, kita pilih lagi sebelum dibuat. Ada rekomendasi lain?';
         break;
       }
       case 'brew': {
-        if (d.phase !== 'open' && d.phase !== 'closing')
-          throw new Error('The cafe is not open yet.');
+        if (d.phase !== 'open' && d.phase !== 'closing') throw new Error('Kafe belum buka.');
         const customer = d.customers.find((c) => c.id === command.id);
         if (!customer || customer.service.stage !== 'ordered')
-          throw new Error('Agree on a drink before preparing it.');
+          throw new Error('Sepakati minumannya sebelum menyiapkannya.');
         if (brewingCapacity(state, customer.product, customer.id) < 1)
           throw new Error(
-            'Ingredients are reserved for another order. Offer a different drink before preparing it.',
+            'Bahan sudah disisihkan untuk pesanan lain. Tawarkan minuman lain sebelum menyiapkannya.',
           );
         customer.service.stage = 'preparing';
         customer.service.style = 'standard';
         customer.service.startedAt = d.elapsed;
         customer.service.readyAt = d.elapsed + BREW_SECONDS.standard;
         customer.service.line = [
-          'All right, I will wait for my drink. Thank you!',
-          'Great, you have started making it. I will wait here.',
-          'Nice, I can smell it already. Looking forward to tasting it.',
+          'Baik, saya tunggu minumannya. Terima kasih!',
+          'Bagus, sudah mulai dibuat. Saya tunggu di sini.',
+          'Wah, aromanya sudah tercium. Tidak sabar mencobanya.',
         ][customer.service.variant];
         break;
       }
       case 'serve': {
-        if (d.phase !== 'open' && d.phase !== 'closing')
-          throw new Error('The cafe is not open yet.');
+        if (d.phase !== 'open' && d.phase !== 'closing') throw new Error('Kafe belum buka.');
         const customer = d.customers.find((c) => c.id === command.id);
-        if (!customer) throw new Error('This order is complete or the customer has already left.');
+        if (!customer) throw new Error('Pesanan ini sudah selesai atau pelanggannya sudah pergi.');
         if (customer.service.stage !== 'ready')
           throw new Error(
-            'The drink is not ready to serve. Agree on an order and prepare it first.',
+            'Minuman belum siap disajikan. Sepakati pesanan dan siapkan terlebih dahulu.',
           );
         if (capacity(state.inventory, customer.product) < 1)
-          throw new Error('Ingredients for this order are out of stock.');
+          throw new Error('Bahan untuk pesanan ini sudah habis.');
         const lines = Object.entries(PRODUCTS[customer.product].recipe).map(([key, quantity]) => {
           const ingredient = key as IngredientId;
           return { ingredient, quantity, cost: consume(state.inventory, ingredient, quantity) };
@@ -416,7 +410,7 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
           time: d.elapsed,
         };
         const paid = receipt.price - receipt.discount;
-        integer(state.cash + paid, 'Cash', CONFIG.maxCash);
+        integer(state.cash + paid, 'Kas', CONFIG.maxCash);
         state.cash += paid;
         d.receipts.push(receipt);
         state.ledger.push({
@@ -439,7 +433,7 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
         state.revision++;
         return {
           state,
-          message: `${PRODUCTS[receipt.product].name} for ${customer.name}. Thank you!`,
+          message: `${PRODUCTS[receipt.product].name} untuk ${customer.name}. Terima kasih!`,
           receipt,
           reaction: {
             customerId: customer.id,
@@ -452,28 +446,28 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
         };
       }
       case 'close':
-        if (d.phase !== 'open') throw new Error('The cafe is not currently open.');
+        if (d.phase !== 'open') throw new Error('Kafe sedang tidak buka.');
         d.phase = 'closing';
         d.closeAt = d.elapsed + CONFIG.closingSeconds;
         if (!d.customers.length) settle(state);
         message = d.settled
-          ? 'Day complete. Your report is ready.'
-          : 'No more arrivals. Serve the remaining queue.';
+          ? 'Hari selesai. Laporanmu sudah siap.'
+          : 'Tidak ada pelanggan baru. Layani antrean yang tersisa.';
         break;
       case 'finish':
-        if (d.phase !== 'closing') throw new Error('Finish opening hours first.');
+        if (d.phase !== 'closing') throw new Error('Akhiri jam buka terlebih dahulu.');
         settle(state);
-        message = 'Cafe closed. Your report is ready.';
+        message = 'Kafe tutup. Laporanmu sudah siap.';
         break;
       case 'next':
         if (d.phase !== 'report' || !d.settled)
-          throw new Error('Complete the report for today first.');
+          throw new Error('Selesaikan laporan hari ini terlebih dahulu.');
         state.day = newDay(d.number + 1, state.cash, state.reputation);
         ingredientIds.forEach((id) => {
           state.inventory[id] = state.inventory[id].filter((b) => b.consumed < b.quantity);
         });
         state.ledger = state.ledger.filter((l) => l.day > d.number - 7);
-        message = 'A new day, new opportunities. What is your plan today?';
+        message = 'Hari baru, peluang baru. Apa rencanamu hari ini?';
         break;
       case 'tutorial':
         state.tutorialSeen = true;
@@ -484,7 +478,7 @@ export function dispatchCommand(previous: Session, command: Command): GameResult
   } catch (error) {
     return {
       state: previous,
-      message: error instanceof Error ? error.message : 'This action could not be processed.',
+      message: error instanceof Error ? error.message : 'Tindakan ini tidak dapat diproses.',
       error: true,
     };
   }

@@ -18,21 +18,21 @@ import { PromotionPanel } from '../features/Promotion';
 
 const preview = createSession(20261016, 'preview');
 const panels: Record<NonNullable<Panel>, { title: string; eyebrow?: string }> = {
-  supplier: { title: 'Buy ingredients' },
-  inventory: { title: 'Inventory' },
-  pricing: { title: 'Menu & pricing' },
-  promotion: { title: 'Promotions & discounts' },
-  report: { title: 'Business report' },
-  help: { title: 'Get to know your cafe.', eyebrow: 'GAME GUIDE' },
-  settings: { title: 'Make yourself comfortable.', eyebrow: 'SETTINGS' },
+  supplier: { title: 'Beli bahan' },
+  inventory: { title: 'Persediaan' },
+  pricing: { title: 'Menu & harga' },
+  promotion: { title: 'Promosi & diskon' },
+  report: { title: 'Laporan usaha' },
+  help: { title: 'Kenali kafemu.', eyebrow: 'PANDUAN BERMAIN' },
+  settings: { title: 'Atur kenyamananmu.', eyebrow: 'PENGATURAN' },
 };
 const nav: { label: string; icon: IconName; panel: Panel }[] = [
-  { label: 'My cafe', icon: 'store', panel: null },
-  { label: 'Buy ingredients', icon: 'basket', panel: 'supplier' },
-  { label: 'Inventory', icon: 'package', panel: 'inventory' },
-  { label: 'Menu & pricing', icon: 'coffee', panel: 'pricing' },
-  { label: 'Promotions & discounts', icon: 'discount', panel: 'promotion' },
-  { label: 'Business report', icon: 'report', panel: 'report' },
+  { label: 'Kafe saya', icon: 'store', panel: null },
+  { label: 'Beli bahan', icon: 'basket', panel: 'supplier' },
+  { label: 'Persediaan', icon: 'package', panel: 'inventory' },
+  { label: 'Menu & harga', icon: 'coffee', panel: 'pricing' },
+  { label: 'Promosi & diskon', icon: 'discount', panel: 'promotion' },
+  { label: 'Laporan usaha', icon: 'report', panel: 'report' },
 ];
 
 export default function App() {
@@ -52,12 +52,12 @@ export default function App() {
   const canOpen = ready && session.cash >= day.operatingCost;
   const activeMenu = productIds.filter((id) => session.menu[id].active).length;
   const status = !started
-    ? 'A new story awaits'
+    ? 'Cerita baru menantimu'
     : {
-        preparation: 'Time to prepare',
-        open: store.paused ? 'Cafe paused' : 'Cafe is open',
-        closing: 'Last orders',
-        report: 'Cafe closed for the day',
+        preparation: 'Saatnya bersiap',
+        open: store.paused ? 'Kafe dijeda' : 'Kafe sedang buka',
+        closing: 'Pesanan terakhir',
+        report: 'Kafe tutup untuk hari ini',
       }[day.phase];
   const openPanel = (target: Panel) => {
     if (!store.started && target && target !== 'help' && target !== 'settings') store.start();
@@ -83,7 +83,7 @@ export default function App() {
         if (gameStore.getState().started && gameStore.getState().musicEnabled)
           gameStore.setState({
             toast: {
-              text: 'Background music could not be played. Check your browser audio settings.',
+              text: 'Musik latar tidak dapat diputar. Periksa pengaturan audio perambanmu.',
               error: true,
               id: Date.now(),
             },
@@ -110,18 +110,18 @@ export default function App() {
             e.preventDefault();
             store.openPanel(null);
           }}
-          aria-label="NumBrew, home"
+          aria-label="NumBrew, beranda"
         >
           <span className="brand-icon">
             <img src="/icon.png" alt="" />
           </span>
           <span>
             Num<span className="brand-accent">Brew</span>
-            <small>BREW IDEAS, BLEND NUMBERS!</small>
+            <small>SEDUH IDE, RACIK ANGKA!</small>
           </span>
         </a>
-        <div className="sidebar-section">YOUR WORKSPACE</div>
-        <nav aria-label="Main navigation">
+        <div className="sidebar-section">RUANG KERJAMU</div>
+        <nav aria-label="Navigasi utama">
           {nav.map((item) => (
             <button
               className={`nav-item ${panel === item.panel ? 'selected' : ''}`}
@@ -134,16 +134,16 @@ export default function App() {
             </button>
           ))}
         </nav>
-        <div className="sidebar-section second">LEARNING CORNER</div>
+        <div className="sidebar-section second">POJOK BELAJAR</div>
         <button className="nav-item" onClick={() => openPanel('help')}>
           <Icon name="book" />
-          <span>How to play</span>
+          <span>Cara bermain</span>
           <Icon name="chevron" size={15} />
         </button>
         <div className="sidebar-bottom">
           <button className="nav-item" onClick={() => openPanel('settings')}>
             <Icon name="settings" />
-            <span>Settings</span>
+            <span>Pengaturan</span>
           </button>
         </div>
       </aside>
@@ -151,39 +151,31 @@ export default function App() {
         <header className="page-header">
           <div>
             <div className="greeting">
-              <Icon name="sun" size={16} /> {active ? 'READY TO SERVE' : 'WELCOME TO YOUR CAFE'}
+              <Icon name="sun" size={16} /> {active ? 'SIAP MELAYANI' : 'SELAMAT DATANG DI KAFEMU'}
             </div>
             <h1>
               {!started
-                ? 'Good stories start here.'
+                ? 'Cerita indah dimulai di sini.'
                 : day.phase === 'report'
-                  ? 'One day, many lessons.'
+                  ? 'Satu hari, banyak pelajaran.'
                   : active
-                    ? 'A warm cup, a new smile.'
-                    : 'A new day, a fresh brew.'}
+                    ? 'Secangkir kehangatan, senyum baru.'
+                    : 'Hari baru, seduhan baru.'}
             </h1>
             <p>
               {!started
-                ? 'Build your dream cafe. Discover math in every decision.'
-                : status + '. Growing together, one cup at a time.'}
+                ? 'Bangun kafe impianmu. Temukan matematika dalam setiap keputusan.'
+                : status + '. Tumbuh bersama, secangkir demi secangkir.'}
             </p>
           </div>
           <div className="header-actions">
-            <div className="institution-logos" aria-label="Project institutions">
-              <img src="/assets/icon/Logo%20DMGC.png" alt="DMGC" loading="lazy" />
-              <img
-                src="/assets/icon/Universitas-Siliwangi.png"
-                alt="Universitas Siliwangi"
-                loading="lazy"
-              />
-            </div>
             <div className="header-controls">
               <span className="day-pill">
-                <Icon name="sun" size={18} /> Day {day.number}
+                <Icon name="sun" size={18} /> Hari {day.number}
               </span>
               <button
                 className="icon-button help-button"
-                aria-label="Open guide"
+                aria-label="Buka panduan"
                 onClick={() => openPanel('help')}
               >
                 <Icon name="help" size={22} />
@@ -195,62 +187,64 @@ export default function App() {
           <div className="notice status-warning" role="status">
             <span>
               {store.readOnly
-                ? 'Your cafe is open in another tab. Close that tab and reload to play here.'
+                ? 'Kafemu terbuka di tab lain. Tutup tab tersebut, lalu muat ulang untuk bermain di sini.'
                 : store.warning}
             </span>
             <button className="text-button" onClick={() => openPanel('settings')}>
-              Settings
+              Pengaturan
             </button>
           </div>
         )}
-        <section className="stats-grid" aria-label="Cafe overview">
+        <section className="stats-grid" aria-label="Ringkasan kafe">
           <Stat
             icon="wallet"
-            label="Cafe cash"
+            label="Kas kafe"
             value={money(session.cash)}
             note={
               started && active
-                ? `${money(day.operatingCost)} reserved for operating costs`
-                : 'Funds for your next chapter'
+                ? `${money(day.operatingCost)} disisihkan untuk biaya operasional`
+                : 'Modal untuk langkah berikutnya'
             }
             color="green"
           />
           <Stat
             icon="package"
-            label="Inventory value"
+            label="Nilai persediaan"
             value={money(inventoryValue(session.inventory))}
-            note="Ingredients in stock, opportunities ahead"
+            note="Bahan tersedia, peluang menanti"
             color="gold"
           />
           <Stat
             icon="users"
-            label="Customers today"
+            label="Pelanggan hari ini"
             value={`${day.receipts.length}`}
-            note="Happy customers served"
+            note="Pelanggan yang sudah dilayani"
             color="rose"
           />
           <Stat
             icon="star"
-            label="Cafe reputation"
+            label="Reputasi kafe"
             value={`${session.reputation} / 100`}
             note={
               session.reputation >= 75
-                ? 'Becoming a favorite'
+                ? 'Mulai jadi favorit'
                 : session.reputation >= 60
-                  ? 'Getting noticed'
-                  : 'A welcoming newcomer'
+                  ? 'Mulai dikenal'
+                  : 'Pendatang baru yang ramah'
             }
             color="sage"
           />
         </section>
         <div className={`workspace-grid ${started && active ? 'serving-workspace' : ''}`}>
           <div className="cafe-column">
-            <section className="cafe-card" aria-label="Interactive cafe">
+            <section className="cafe-card" aria-label="Kafe interaktif">
               <div className="cafe-topline">
                 <div>
                   <span className={`status-dot ${active && !store.paused ? 'live' : ''}`} />
                   {(active || day.phase === 'report') && (
-                    <strong>{active ? 'Open doors, shared stories' : 'See you tomorrow'}</strong>
+                    <strong>
+                      {active ? 'Pintu terbuka, cerita bersama' : 'Sampai jumpa besok'}
+                    </strong>
                   )}
                 </div>
                 <span>
@@ -263,24 +257,24 @@ export default function App() {
                   <Icon name={active ? 'coffee' : 'leaf'} size={14} />
                   {active
                     ? day.phase === 'closing'
-                      ? 'LAST ORDERS'
-                      : 'CAFE OPEN'
+                      ? 'PESANAN TERAKHIR'
+                      : 'KAFE BUKA'
                     : day.phase === 'report'
-                      ? 'SEE YOU TOMORROW'
-                      : 'BEFORE THE STORY BEGINS'}
+                      ? 'SAMPAI JUMPA BESOK'
+                      : 'SEBELUM CERITA DIMULAI'}
                 </div>
                 {started && active && <CustomerBubbles />}
                 {started && active && store.paused && (
                   <div className="paused-overlay">
                     <span>
-                      <Icon name="pause" /> Time is paused
+                      <Icon name="pause" /> Waktu dijeda
                     </span>
                     <button
                       className="button primary"
                       disabled={store.saveStatus === 'failed' || store.readOnly}
                       onClick={store.togglePause}
                     >
-                      <Icon name="play" size={17} /> Resume
+                      <Icon name="play" size={17} /> Lanjutkan
                     </button>
                   </div>
                 )}
@@ -296,12 +290,12 @@ export default function App() {
                   <strong>{status}</strong>
                   <span>
                     {active
-                      ? `${day.customers.length} orders waiting · ${Math.max(0, (day.phase === 'closing' ? day.closeAt : day.duration) - day.elapsed)} seconds remaining`
+                      ? `${day.customers.length} pesanan menunggu · tersisa ${Math.max(0, (day.phase === 'closing' ? day.closeAt : day.duration) - day.elapsed)} detik`
                       : day.phase === 'report'
                         ? profitVerified
-                          ? `Business result today: ${money(report.profit)}`
-                          : 'View your report to see how your cafe performed.'
-                        : 'Prepare ingredients and prices, then welcome your first customer.'}
+                          ? `Hasil usaha hari ini: ${money(report.profit)}`
+                          : 'Buka laporan untuk melihat hasil usaha kafemu.'
+                        : 'Siapkan bahan dan harga, lalu sambut pelanggan pertamamu.'}
                   </span>
                 </div>
                 {started && day.phase === 'preparation' && (
@@ -310,14 +304,14 @@ export default function App() {
                     disabled={!canOpen || store.readOnly || store.saveStatus === 'failed'}
                     onClick={() => store.dispatch({ type: 'open' })}
                   >
-                    <Icon name="play" size={17} /> Open cafe
+                    <Icon name="play" size={17} /> Buka kafe
                   </button>
                 )}
                 {started && active && (
                   <div className="button-row">
                     <button
                       className="icon-button pause-control"
-                      aria-label={store.paused ? 'Resume cafe' : 'Pause cafe'}
+                      aria-label={store.paused ? 'Lanjutkan kafe' : 'Jeda kafe'}
                       disabled={store.readOnly || store.saveStatus === 'failed'}
                       onClick={store.togglePause}
                     >
@@ -330,13 +324,13 @@ export default function App() {
                         store.dispatch({ type: day.phase === 'open' ? 'close' : 'finish' })
                       }
                     >
-                      {day.phase === 'open' ? 'Close cafe' : 'Finish day'}
+                      {day.phase === 'open' ? 'Tutup kafe' : 'Akhiri hari'}
                     </button>
                   </div>
                 )}
                 {started && day.phase === 'report' && (
                   <button className="button primary" onClick={() => openPanel('report')}>
-                    View report
+                    Lihat laporan
                     <Icon name="arrowRight" size={17} />
                   </button>
                 )}
@@ -355,37 +349,39 @@ export default function App() {
           <aside className={`day-panel ${started && active ? 'serving-panel' : ''}`}>
             {!started ? (
               <>
-                <span className="eyebrow">{store.session ? 'SAVED PROGRESS' : 'CHAPTER ONE'}</span>
+                <span className="eyebrow">
+                  {store.session ? 'PROGRES TERSIMPAN' : 'BAB PERTAMA'}
+                </span>
                 <h2>
                   {store.session ? (
-                    'Continue your cafe'
+                    'Lanjutkan kafemu'
                   ) : (
                     <>
-                      Small cafe, <br />
-                      big dreams.
+                      Kafe kecil, <br />
+                      mimpi besar.
                     </>
                   )}
                 </h2>
                 <p>
                   {store.session
-                    ? `Your cafe is saved for day ${day.number}.`
-                    : 'Your starting funds are ready. Now brew a business with a story of its own.'}
+                    ? `Kafemu tersimpan pada hari ke-${day.number}.`
+                    : 'Modal awalmu sudah siap. Saatnya membangun usaha dengan ceritamu sendiri.'}
                 </p>
                 <div className="starting-capital">
-                  <span>{store.session ? 'Saved cash' : 'Your starting capital'}</span>
+                  <span>{store.session ? 'Kas tersimpan' : 'Modal awalmu'}</span>
                   <strong>{money(session.cash)}</strong>
                   <Icon name="coins" size={32} />
                 </div>
                 {!store.session && (
                   <ul className="welcome-list">
                     <li>
-                      <Icon name="check" size={16} /> Buy and manage ingredients
+                      <Icon name="check" size={16} /> Beli dan kelola bahan
                     </li>
                     <li>
-                      <Icon name="check" size={16} /> Set your prices
+                      <Icon name="check" size={16} /> Tentukan harga jual
                     </li>
                     <li>
-                      <Icon name="check" size={16} /> Learn from your results
+                      <Icon name="check" size={16} /> Belajar dari hasil usahamu
                     </li>
                   </ul>
                 )}
@@ -394,62 +390,55 @@ export default function App() {
                   disabled={store.readOnly}
                   onClick={() => store.start()}
                 >
-                  {store.session ? 'Continue your cafe' : 'Start your cafe'}
+                  {store.session ? 'Lanjutkan kafemu' : 'Mulai kafemu'}
                   <Icon name="arrowRight" size={18} />
                 </button>
                 <small className="welcome-footnote">
-                  Take your time. Learn through the choices you make.
+                  Tak perlu terburu-buru. Belajarlah dari setiap pilihanmu.
                 </small>
               </>
             ) : active ? (
               <ServiceCounter />
             ) : day.phase === 'report' ? (
               <>
-                <h2>Daily summary</h2>
+                <h2>Ringkasan harian</h2>
                 <div
                   className={`day-result ${profitVerified && report.profit < 0 ? 'negative' : ''}`}
                 >
                   {profitVerified && (
                     <>
-                      <span>{report.profit < 0 ? 'Net loss' : 'Net profit'}</span>
+                      <span>{report.profit < 0 ? 'Rugi bersih' : 'Laba bersih'}</span>
                       <strong>{money(report.profit)}</strong>
                     </>
                   )}
-                  <small>Customers served: {report.customers}</small>
+                  <small>Pelanggan dilayani: {report.customers}</small>
                 </div>
                 <button className="button primary full" onClick={() => openPanel('report')}>
-                  Open report
+                  Buka laporan
                   <Icon name="arrowRight" size={18} />
                 </button>
               </>
             ) : (
               <>
-                <h2>Prepare for today</h2>
-                <p>
-                  Stock your shelves, set prices &amp; menu items, read the guide, then open your
-                  cafe!
-                </p>
+                <h2>Persiapan hari ini</h2>
+                <p>Siapkan stok, atur menu dan harga, baca panduan, lalu buka kafemu!</p>
                 <div className="checklist">
                   <Checklist
                     done={ready}
-                    title="Stock your shelves"
-                    description={
-                      ready
-                        ? 'Ingredients are ready for your drinks'
-                        : 'Buy ingredients from the supplier'
-                    }
+                    title="Siapkan persediaan"
+                    description={ready ? 'Bahan minuman sudah siap' : 'Beli bahan dari pemasok'}
                     onClick={() => openPanel('supplier')}
                   />
                   <Checklist
                     done={activeMenu > 0}
-                    title="Prepare menu & prices"
-                    description={`${activeMenu} active menu items · review their COGS`}
+                    title="Siapkan menu & harga"
+                    description={`${activeMenu} menu aktif · periksa HPP-nya`}
                     onClick={() => openPanel('pricing')}
                   />
                   <Checklist
                     done={session.cash >= day.operatingCost}
-                    title="Guide"
-                    description="Learn how to manage your cafe."
+                    title="Panduan"
+                    description="Pelajari cara mengelola kafemu."
                     onClick={() => openPanel('help')}
                   />
                 </div>
@@ -458,10 +447,10 @@ export default function App() {
                   onClick={() => openPanel(ready ? 'pricing' : 'supplier')}
                 >
                   <Icon name={ready ? 'coffee' : 'basket'} size={17} />
-                  {ready ? 'Review menu & prices' : 'Shop for ingredients'}
+                  {ready ? 'Periksa menu & harga' : 'Belanja bahan'}
                 </button>
                 <small className="welcome-footnote">
-                  No time limit during preparation. Think it through.
+                  Tidak ada batas waktu saat persiapan. Rencanakan dengan tenang.
                 </small>
               </>
             )}
@@ -471,12 +460,12 @@ export default function App() {
           <div className="section-heading">
             <div>
               <h2>
-                Today on the menu<span className="count-badge">3 drinks</span>
+                Menu hari ini<span className="count-badge">3 minuman</span>
               </h2>
-              <p>Turn simple ingredients into something special.</p>
+              <p>Ubah bahan sederhana menjadi sajian istimewa.</p>
             </div>
             <button className="text-button" onClick={() => openPanel('pricing')}>
-              Manage menu & prices <Icon name="arrowRight" size={17} />
+              Kelola menu & harga <Icon name="arrowRight" size={17} />
             </button>
           </div>
           <div className="product-grid">
@@ -489,10 +478,10 @@ export default function App() {
                     <ProductArt id={id} />
                     <span className={`product-stock ${portions ? 'available' : ''}`}>
                       {!session.menu[id].active
-                        ? 'Item disabled'
+                        ? 'Menu dinonaktifkan'
                         : portions
-                          ? `${portions} servings available`
-                          : 'Needs ingredients'}
+                          ? `${portions} porsi tersedia`
+                          : 'Bahan belum tersedia'}
                     </span>
                   </div>
                   <div className="product-info">
@@ -503,7 +492,7 @@ export default function App() {
                     </div>
                     {!!session.menu[id].discountPercent && (
                       <small className="promo-label">
-                        Discount {session.menu[id].discountPercent}% · from{' '}
+                        Diskon {session.menu[id].discountPercent}% · dari{' '}
                         {money(session.menu[id].price)}
                       </small>
                     )}
@@ -519,14 +508,14 @@ export default function App() {
               <Icon name="book" size={19} />
             </span>
             <div>
-              <strong>Did you know?</strong>
+              <strong>Tahukah kamu?</strong>
               <p>
-                Money spent on ingredients is not necessarily an expense today. Unsold stock still
-                has value.
+                Uang untuk membeli bahan belum tentu menjadi beban hari ini. Stok yang belum terjual
+                masih memiliki nilai.
               </p>
             </div>
             <button className="text-button" onClick={() => openPanel('help')}>
-              Learn more
+              Pelajari lebih lanjut
               <Icon name="arrowRight" size={16} />
             </button>
           </div>
@@ -535,14 +524,14 @@ export default function App() {
           <div className="mobile-tools">
             <button
               className="icon-button"
-              aria-label="Open settings"
+              aria-label="Buka pengaturan"
               onClick={() => openPanel('settings')}
             >
               <Icon name="settings" size={19} />
             </button>
             <button
               className="icon-button"
-              aria-label="Game help"
+              aria-label="Bantuan permainan"
               onClick={() => openPanel('help')}
             >
               <Icon name="book" size={19} />
@@ -557,10 +546,7 @@ export default function App() {
         >
           <Icon name={toast.error ? 'help' : 'check'} size={20} />
           <span>{toast.text}</span>
-          <button
-            aria-label="Dismiss notification"
-            onClick={() => gameStore.setState({ toast: null })}
-          >
+          <button aria-label="Tutup notifikasi" onClick={() => gameStore.setState({ toast: null })}>
             <Icon name="x" size={16} />
           </button>
         </div>

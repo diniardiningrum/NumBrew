@@ -1,6 +1,6 @@
-export function integer(value: number, label = 'Value', max = Number.MAX_SAFE_INTEGER): number {
+export function integer(value: number, label = 'Nilai', max = Number.MAX_SAFE_INTEGER): number {
   if (!Number.isSafeInteger(value) || value < 0 || value > max)
-    throw new Error(`${label} is invalid.`);
+    throw new Error(`${label} tidak valid.`);
   return value;
 }
 
@@ -8,7 +8,7 @@ export function ratio(amount: number, numerator: number, denominator: number): n
   integer(amount);
   integer(numerator);
   integer(denominator);
-  if (denominator === 0) throw new Error('The divisor must be greater than zero.');
+  if (denominator === 0) throw new Error('Pembagi harus lebih besar dari nol.');
   const product = integer(amount * numerator);
   const quotient = Math.floor(product / denominator);
   return quotient + (product % denominator >= Math.ceil(denominator / 2) ? 1 : 0);

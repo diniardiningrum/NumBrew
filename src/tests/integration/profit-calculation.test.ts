@@ -101,7 +101,7 @@ describe('player-calculated net profit or loss', () => {
     },
   );
   it('explains a missing minus sign and keeps zeros valid', () => {
-    expect(profitFeedback(1500, -1500)).toContain('minus sign');
+    expect(profitFeedback(1500, -1500)).toContain('tanda minus');
     expect(profitFeedback(0, 0)).toBeNull();
     expect(profitFeedback(null, 0)).not.toBeNull();
   });

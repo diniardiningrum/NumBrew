@@ -29,7 +29,7 @@ export function PhaserHost() {
         });
         game.canvas.setAttribute(
           'aria-label',
-          'Cafe interior. All orders can also be served using the buttons beside the scene.',
+          'Interior kafe. Semua pesanan juga dapat dilayani melalui tombol di samping adegan.',
         );
         game.canvas.setAttribute('role', 'img');
       })
@@ -49,8 +49,8 @@ export function PhaserHost() {
           <Icon name="coffee" size={28} />
           <span>
             {failed
-              ? 'The illustration could not load. Cafe controls are still available.'
-              : 'Preparing your favorite corner…'}
+              ? 'Ilustrasi tidak dapat dimuat. Kontrol kafe tetap tersedia.'
+              : 'Menyiapkan sudut favoritmu…'}
           </span>
         </div>
       )}

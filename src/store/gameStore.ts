@@ -141,7 +141,7 @@ export const gameStore = createStore<Store>((set, get) => ({
         saveStatus: 'failed',
         paused: true,
         warning:
-          'Progress has not been saved. Try saving again or choose to continue without saving in Settings.',
+          'Progres belum tersimpan. Coba simpan ulang atau pilih lanjutkan tanpa menyimpan di Pengaturan.',
       });
     }
   },
@@ -156,7 +156,7 @@ export const gameStore = createStore<Store>((set, get) => ({
       selectedCustomerId: null,
       lastReaction: null,
       toast: {
-        text: 'Returned to the start of preparation. Transactions made today have been undone.',
+        text: 'Kembali ke awal persiapan. Transaksi hari ini telah dibatalkan.',
         error: false,
         id: Date.now(),
       },
@@ -174,7 +174,7 @@ export const gameStore = createStore<Store>((set, get) => ({
   continueInMemory: () =>
     set({
       saveStatus: 'memory',
-      warning: 'This session is not being saved. Progress will be lost when the page closes.',
+      warning: 'Sesi ini tidak disimpan. Progres akan hilang saat halaman ditutup.',
     }),
 }));
 
@@ -196,7 +196,7 @@ export function hydrateGame(): void {
     gameStore.setState({
       hydrated: true,
       saveStatus: 'failed',
-      warning: 'Browser storage is unavailable. You can play without saving.',
+      warning: 'Penyimpanan peramban tidak tersedia. Kamu bisa bermain tanpa menyimpan.',
     });
   }
 }

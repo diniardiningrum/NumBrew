@@ -142,7 +142,7 @@ describe('customer conversations and recommendations', () => {
       askedBudget: false,
       stage: 'greeting',
     });
-    expect(state.day.customers[0].service.line).toContain('Cocoa Latte');
+    expect(state.day.customers[0].service.line).toContain('Cokelat susu');
     const repeated = dispatchCommand(state, { type: 'ask', id: 'guest-1', topic: 'taste' });
     expect(repeated.error).toBe(true);
     expect(repeated.state).toBe(state);

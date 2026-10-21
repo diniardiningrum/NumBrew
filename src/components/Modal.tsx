@@ -76,7 +76,7 @@ export function Modal({
             {eyebrow && <span className="eyebrow">{eyebrow}</span>}
             <h2 id="modal-title">{title}</h2>
           </div>
-          <button className="icon-button" aria-label="Close panel" onClick={onClose}>
+          <button className="icon-button" aria-label="Tutup panel" onClick={onClose}>
             <Icon name="x" />
           </button>
         </header>

@@ -320,7 +320,7 @@ describe('save recovery', () => {
     port.setItem(SAVE_KEY, '{damaged');
     const r = readSave(port);
     expect(r.data?.session.cash).toBe(500000);
-    expect(r.warning).toContain('backup');
+    expect(r.warning).toContain('Cadangan');
   });
   it('rejects unknown versions, invalid references and contradictory cash', () => {
     const valid = envelope(stocked());

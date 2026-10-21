@@ -44,19 +44,15 @@ export function SupplierPanel() {
     <>
       <div className="panel-intro">
         <p>
-          <span>
-            Purchases add to your stock. Ingredient costs become COGS when a drink is sold.
-          </span>
+          <span>Pembelian menambah stok. Biaya bahan menjadi HPP saat minuman terjual.</span>
         </p>
         <div className="mini-balance">
-          <span>Available cash</span>
+          <span>Kas tersedia</span>
           <strong>{money(session.cash)}</strong>
         </div>
       </div>
       {!editable && (
-        <div className="notice">
-          The supplier will be available during preparation for the next day.
-        </div>
+        <div className="notice">Pemasok akan tersedia saat persiapan hari berikutnya.</div>
       )}
       <button
         className="starter-bundle"
@@ -67,8 +63,8 @@ export function SupplierPanel() {
           <Icon name="basket" />
         </span>
         <span>
-          <strong>Cafe starter bundle</strong>
-          <small>All ingredients · 4 liters of milk · 20 cups</small>
+          <strong>Paket awal kafe</strong>
+          <small>Semua bahan · 4 liter susu · 20 gelas</small>
         </span>
         <b>Rp240.000</b>
         <Icon name="plus" />
@@ -87,16 +83,16 @@ export function SupplierPanel() {
               <div className="ingredient-info">
                 <h3>{item.name}</h3>
                 <p>
-                  {number(item.pack)} {item.unit} / pack
+                  {number(item.pack)} {item.unit} / kemasan
                 </p>
                 <small>
-                  Stock: {number(stock(session.inventory, id))} {item.unit}
+                  Stok: {number(stock(session.inventory, id))} {item.unit}
                 </small>
               </div>
               <strong>{money(item.cost)}</strong>
               <div className="stepper">
                 <button
-                  aria-label={`Decrease ${item.name}`}
+                  aria-label={`Kurangi ${item.name}`}
                   disabled={!editable || !cart[id]}
                   onClick={() => setCart({ ...cart, [id]: Math.max(0, (cart[id] ?? 0) - 1) })}
                 >
@@ -104,7 +100,7 @@ export function SupplierPanel() {
                 </button>
                 <span aria-live="polite">{cart[id] ?? 0}</span>
                 <button
-                  aria-label={`Increase ${item.name}`}
+                  aria-label={`Tambah ${item.name}`}
                   disabled={!editable || (cart[id] ?? 0) >= 100}
                   onClick={() => setCart({ ...cart, [id]: (cart[id] ?? 0) + 1 })}
                 >
@@ -117,9 +113,9 @@ export function SupplierPanel() {
       </div>
       <div className="purchase-footer">
         <div>
-          <span>Purchase total</span>
+          <span>Total pembelian</span>
           <strong>{money(total)}</strong>
-          <small>Cash after purchase: {money(session.cash - total)}</small>
+          <small>Kas setelah pembelian: {money(session.cash - total)}</small>
         </div>
         <button
           className="button primary"
@@ -128,14 +124,16 @@ export function SupplierPanel() {
             if (dispatch({ type: 'buy', cart })) setCart({});
           }}
         >
-          <Icon name="bag" size={18} /> Buy ingredients
+          <Icon name="bag" size={18} /> Beli bahan
         </button>
       </div>
       {total > session.cash && (
-        <p className="error-text">Not enough cash. Reduce the number of packs.</p>
+        <p className="error-text">Kas tidak cukup. Kurangi jumlah kemasan.</p>
       )}
       {total > 0 && session.cash >= total && session.cash - total < session.day.operatingCost && (
-        <p className="error-text">Reserve {money(session.day.operatingCost)} to open the cafe.</p>
+        <p className="error-text">
+          Sisihkan {money(session.day.operatingCost)} untuk membuka kafe.
+        </p>
       )}
     </>
   );
@@ -146,9 +144,9 @@ export function InventoryPanel() {
   return (
     <>
       <div className="panel-intro">
-        <p>What is left in stock today.</p>
+        <p>Sisa persediaan hari ini.</p>
         <div className="mini-balance">
-          <span>Inventory value</span>
+          <span>Nilai persediaan</span>
           <strong>{money(inventoryValue(session.inventory))}</strong>
         </div>
       </div>
@@ -163,30 +161,30 @@ export function InventoryPanel() {
               {number(stock(session.inventory, id))} <small>{INGREDIENTS[id].unit}</small>
             </h3>
             <span className={`tag ${stock(session.inventory, id) === 0 ? 'empty' : 'green'}`}>
-              {stock(session.inventory, id) === 0 ? 'Out of stock' : 'In stock'}
+              {stock(session.inventory, id) === 0 ? 'Stok habis' : 'Stok tersedia'}
             </span>
           </div>
         ))}
       </div>
-      <h3 className="subheading">Drinks you can make with current stock</h3>
+      <h3 className="subheading">Minuman yang bisa dibuat dari stok saat ini</h3>
       {productIds.map((id) => (
         <div className="simple-row" key={id}>
           <span>{PRODUCTS[id].name}</span>
-          <strong>{capacity(session.inventory, id)} servings</strong>
+          <strong>{capacity(session.inventory, id)} porsi</strong>
         </div>
       ))}
       <div className="learning-note">
         <Icon name="book" />
         <p>
-          All drinks share milk and cups. The figures above show the capacity for each drink
-          separately; they cannot be added together.
+          Semua minuman menggunakan susu dan gelas yang sama. Angka di atas menunjukkan kapasitas
+          tiap minuman secara terpisah dan tidak dapat dijumlahkan.
         </p>
       </div>
       <button
         className="button primary full"
         onClick={() => gameStore.getState().openPanel('supplier')}
       >
-        <Icon name="plus" size={18} /> Restock ingredients
+        <Icon name="plus" size={18} /> Tambah stok bahan
       </button>
     </>
   );
@@ -215,7 +213,7 @@ function PriceEditor({ id }: { id: ProductId }) {
       return;
     }
     if (dispatch({ type: 'calculate_hpp', product: id, answer: parsedAnswer! })) setFeedback('');
-    else setFeedback('Your calculation has not been saved. Check the save status and try again.');
+    else setFeedback('Perhitunganmu belum tersimpan. Periksa status penyimpanan dan coba lagi.');
   };
   return (
     <article className="price-editor">
@@ -231,13 +229,13 @@ function PriceEditor({ id }: { id: ProductId }) {
               disabled={!editable}
               onChange={() => dispatch({ type: 'toggle', product: id })}
             />{' '}
-            Available on the menu
+            Tersedia di menu
           </label>
         </div>
       </div>
       <div className="cost-detail hpp-worksheet">
         <h4>
-          <Icon name="calculator" size={17} /> 1. Read each ingredient cost
+          <Icon name="calculator" size={17} /> 1. Periksa biaya tiap bahan
         </h4>
         {cost.lines.map((l) => (
           <div className="simple-row" key={l.ingredient}>
@@ -252,13 +250,12 @@ function PriceEditor({ id }: { id: ProductId }) {
           </div>
         ))}
         <p>
-          COGS per serving = ingredient costs + packaging. Add the three costs above, then enter
-          your answer.
+          HPP per porsi = biaya bahan + kemasan. Jumlahkan ketiga biaya di atas, lalu masukkan
+          jawabanmu.
         </p>
         {cost.estimated && (
           <p className="muted">
-            Estimated using supplier prices because there are not enough ingredients for one
-            serving.
+            Perkiraan menggunakan harga pemasok karena bahan belum cukup untuk satu porsi.
           </p>
         )}
       </div>
@@ -270,20 +267,20 @@ function PriceEditor({ id }: { id: ProductId }) {
         }}
       >
         <label htmlFor={`hpp-${id}`} className="field-label">
-          2. Calculate COGS per serving
+          2. Hitung HPP per porsi
         </label>
         <div className="hpp-answer-row">
           <div className="money-input">
             <span>Rp</span>
             <input
               id={`hpp-${id}`}
-              aria-label={`COGS per serving ${PRODUCTS[id].name}`}
+              aria-label={`HPP per porsi ${PRODUCTS[id].name}`}
               aria-describedby={`hpp-feedback-${id}`}
               aria-invalid={!!feedback}
               inputMode="numeric"
               type="text"
               autoComplete="off"
-              placeholder="Enter your calculated total"
+              placeholder="Masukkan hasil penjumlahanmu"
               value={answer}
               disabled={!editable}
               onChange={(e) => {
@@ -298,7 +295,7 @@ function PriceEditor({ id }: { id: ProductId }) {
             disabled={!editable || !answer.trim() || verified}
           >
             <Icon name={verified ? 'check' : 'calculator'} size={16} />
-            {verified ? 'COGS verified' : 'Check COGS'}
+            {verified ? 'HPP terverifikasi' : 'Periksa HPP'}
           </button>
         </div>
         <p
@@ -308,17 +305,17 @@ function PriceEditor({ id }: { id: ProductId }) {
         >
           {feedback ||
             (verified
-              ? 'Correct! Use your calculated COGS to help set a selling price.'
-              : 'You calculate the total COGS. Trying an answer does not cost cash or reputation.')}
+              ? 'Benar! Gunakan HPP yang kamu hitung untuk menentukan harga jual.'
+              : 'Hitung sendiri total HPP. Mencoba menjawab tidak mengurangi kas atau reputasi.')}
         </p>
       </form>
       <div className="price-fields manual-hpp-price">
         <label>
-          <span className="field-label">3. Set the selling price</span>
+          <span className="field-label">3. Tentukan harga jual</span>
           <div className="money-input">
             <span>Rp</span>
             <input
-              aria-label={`Price of ${PRODUCTS[id].name}`}
+              aria-label={`Harga ${PRODUCTS[id].name}`}
               inputMode="numeric"
               type="number"
               min="1"
@@ -335,46 +332,47 @@ function PriceEditor({ id }: { id: ProductId }) {
           disabled={!editable || !verified || !valid || value === session.menu[id].price}
           onClick={() => dispatch({ type: 'price', product: id, price: value })}
         >
-          Save price
+          Simpan harga
         </button>
       </div>
       {verified && (
         <div className={`contribution ${valid && netPrice < cost.hpp ? 'loss' : ''}`}>
           <span>
-            {valid && netPrice < cost.hpp ? 'Loss' : 'Profit'} per cup before operating costs
-            {session.menu[id].discountPercent ? ' after discount' : ''}
+            {valid && netPrice < cost.hpp ? 'Rugi' : 'Laba'} per gelas sebelum biaya operasional
+            {session.menu[id].discountPercent ? ' setelah diskon' : ''}
           </span>
           <strong>{valid ? money(Math.abs(netPrice - cost.hpp)) : '—'}</strong>
         </div>
       )}
       <p className="hpp-feedback">
         {verified
-          ? 'Gross profit = discounted price − your calculated COGS. Operating costs are included in the daily report.'
-          : 'Check your COGS first to change prices and see the profit or loss per cup.'}
+          ? 'Laba kotor = harga setelah diskon − HPP hasil perhitunganmu. Biaya operasional masuk dalam laporan harian.'
+          : 'Periksa HPP terlebih dahulu untuk mengubah harga dan melihat laba atau rugi per gelas.'}
       </p>
       {!!session.menu[id].discountPercent && (
         <p className="hpp-feedback">
-          Saved discount: {session.menu[id].discountPercent}%. Customer pays{' '}
-          {valid ? money(netPrice) : '—'} at the selling price above.{' '}
+          Diskon tersimpan: {session.menu[id].discountPercent}%. Pelanggan membayar{' '}
+          {valid ? money(netPrice) : '—'} dengan harga jual di atas.{' '}
           <button
             className="text-button"
             onClick={() => gameStore.getState().openPanel('promotion')}
           >
-            Manage discounts
+            Kelola diskon
           </button>
         </p>
       )}
       {verified && valid && netPrice < cost.hpp && (
         <p className="error-text">
-          You can choose this price, but each sale makes a loss even before operating costs.
+          Kamu bisa memilih harga ini, tetapi setiap penjualan merugi bahkan sebelum biaya
+          operasional.
         </p>
       )}
       {verified && !valid && (
-        <p className="error-text">Enter a whole Rupiah price from Rp1 to Rp100.000.</p>
+        <p className="error-text">Masukkan harga dalam rupiah bulat dari Rp1 sampai Rp100.000.</p>
       )}
       {!editable && (
         <p className="notice">
-          You can update COGS calculations and prices during preparation in the main game tab.
+          Kamu dapat memperbarui perhitungan HPP dan harga saat persiapan di tab utama permainan.
         </p>
       )}
     </article>
@@ -384,8 +382,8 @@ export function PricingPanel() {
   return (
     <>
       <p className="muted panel-description">
-        Add the ingredient costs to find COGS (Cost of Goods Sold) per serving, check your answer,
-        then set a selling price. Prices are locked while the cafe is open.
+        Jumlahkan biaya bahan untuk menghitung HPP (Harga Pokok Penjualan) per porsi, periksa
+        jawabanmu, lalu tentukan harga jual. Harga terkunci selama kafe buka.
       </p>
       {productIds.map((id) => (
         <PriceEditor key={id} id={id} />

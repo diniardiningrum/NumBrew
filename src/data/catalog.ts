@@ -24,7 +24,7 @@ export const INGREDIENTS: Record<
   IngredientId,
   {
     name: string;
-    unit: 'g' | 'ml' | 'pcs';
+    unit: 'g' | 'ml' | 'buah';
     pack: number;
     cost: number;
     color: string;
@@ -32,44 +32,44 @@ export const INGREDIENTS: Record<
   }
 > = {
   matcha: {
-    name: 'Matcha powder',
+    name: 'Bubuk matcha',
     unit: 'g',
     pack: 500,
     cost: 60_000,
     color: '#829565',
-    hint: 'Smooth & earthy',
+    hint: 'Lembut dengan aroma teh',
   },
   coffee: {
-    name: 'Coffee powder',
+    name: 'Bubuk kopi',
     unit: 'g',
     pack: 400,
     cost: 48_000,
     color: '#8f6548',
-    hint: 'A familiar aroma',
+    hint: 'Aroma yang akrab',
   },
   cocoa: {
-    name: 'Cocoa powder',
+    name: 'Bubuk kakao',
     unit: 'g',
     pack: 500,
     cost: 30_000,
     color: '#ac795b',
-    hint: 'Sweet & comforting',
+    hint: 'Manis dan menenangkan',
   },
   milk: {
-    name: 'Fresh milk',
+    name: 'Susu segar',
     unit: 'ml',
     pack: 1000,
     cost: 18_000,
     color: '#a1bdc0',
-    hint: 'Perfect for every latte',
+    hint: 'Cocok untuk setiap racikan susu',
   },
   cup: {
-    name: 'Cup & lid',
-    unit: 'pcs',
+    name: 'Gelas & tutup',
+    unit: 'buah',
     pack: 20,
     cost: 30_000,
     color: '#caaa7b',
-    hint: 'Ready to go',
+    hint: 'Siap dibawa',
   },
 };
 
@@ -84,24 +84,24 @@ export const PRODUCTS: Record<
   }
 > = {
   'matcha-latte': {
-    name: 'Matcha Latte',
+    name: 'Matcha susu',
     short: 'Matcha',
     color: '#81966a',
-    description: 'Smooth matcha meets fresh milk.',
+    description: 'Matcha lembut berpadu susu segar.',
     recipe: { matcha: 10, milk: 200, cup: 1 },
   },
   'coffee-latte': {
-    name: 'Coffee Latte',
-    short: 'Coffee',
+    name: 'Kopi susu',
+    short: 'Kopi',
     color: '#a57a57',
-    description: 'Warm coffee for long conversations.',
+    description: 'Kopi hangat untuk obrolan panjang.',
     recipe: { coffee: 10, milk: 200, cup: 1 },
   },
   'cocoa-latte': {
-    name: 'Cocoa Latte',
-    short: 'Cocoa',
+    name: 'Cokelat susu',
+    short: 'Cokelat',
     color: '#9f6857',
-    description: 'Chocolate to sweeten your day.',
+    description: 'Cokelat untuk memaniskan harimu.',
     recipe: { cocoa: 15, milk: 200, cup: 1 },
   },
 };
@@ -121,7 +121,7 @@ export const PEOPLE: Record<
   }
 > = {
   student: {
-    label: 'School Student',
+    label: 'Pelajar',
     names: ['Yuni'],
     budget: [8_000, 12_000],
     favorite: 'cocoa-latte',
@@ -132,7 +132,7 @@ export const PEOPLE: Record<
     skin: 0xdba77e,
   },
   university: {
-    label: 'University Student',
+    label: 'Mahasiswa',
     names: ['Pahri'],
     budget: [10_000, 16_000],
     favorite: 'coffee-latte',
@@ -143,7 +143,7 @@ export const PEOPLE: Record<
     skin: 0xd2a077,
   },
   worker: {
-    label: 'Office Worker',
+    label: 'Pekerja kantoran',
     names: ['Wahyu'],
     budget: [13_000, 20_000],
     favorite: 'coffee-latte',
@@ -154,7 +154,7 @@ export const PEOPLE: Record<
     skin: 0xbc855e,
   },
   blogger: {
-    label: 'Food Blogger',
+    label: 'Pengulas kuliner',
     names: ['Sri'],
     budget: [12_000, 22_000],
     favorite: 'matcha-latte',
@@ -165,7 +165,7 @@ export const PEOPLE: Record<
     skin: 0xe1b38b,
   },
   loyal: {
-    label: 'Regular Customer',
+    label: 'Pelanggan tetap',
     names: ['Adam'],
     budget: [10_000, 18_000],
     favorite: 'matcha-latte',
